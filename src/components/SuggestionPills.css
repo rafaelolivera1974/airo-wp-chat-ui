@@ -1,0 +1,38 @@
+.suggestion-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  overflow: clip;
+}
+
+.suggestion-pills__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  margin: 0;
+  padding: 4px 12px;
+  border: 1px solid #d3c1f7;
+  border-radius: 50px;
+  background: #2f1c4c;
+  color: #d3c1f7;
+  font: inherit;
+  font-size: 14.222px;
+  font-weight: 500;
+  line-height: 1.375;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.suggestion-pills__btn:hover {
+  background: #3a245c;
+  color: #e8dcff;
+}
+
+.suggestion-pills__btn:focus-visible {
+  outline: 2px solid #d3c1f7;
+  outline-offset: 2px;
+}

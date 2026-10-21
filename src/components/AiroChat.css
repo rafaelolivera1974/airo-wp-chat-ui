@@ -1,0 +1,417 @@
+.airo-chat {
+  --airo-fg: #ffffff;
+  --airo-accent: #744bc4;
+  --airo-tab-border: #462a72;
+  --airo-user-bg: rgba(255, 255, 255, 0.12);
+  --airo-user-border: rgba(255, 255, 255, 0.25);
+  --airo-prompt-border: rgba(212, 219, 224, 0.5);
+  --airo-tool: #7b5cff;
+  --airo-send: #c4b5fd;
+  --airo-radius: 16px;
+  --airo-space-sm: 8px;
+  --airo-space-md: 16px;
+  --airo-space-lg: 24px;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--airo-space-md);
+  width: 448px;
+  max-width: 100%;
+  height: 100%;
+  padding: var(--airo-space-lg);
+  border-left: 4px solid var(--airo-accent);
+  color: var(--airo-fg);
+  font-family: gdsherpa, 'GD Sherpa Variable', sans-serif;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    radial-gradient(
+      120% 80% at 100% 72%,
+      rgba(125, 90, 226, 0.9) 0%,
+      rgba(127, 92, 229, 0.55) 18%,
+      rgba(108, 71, 215, 0) 55%
+    ),
+    radial-gradient(
+      90% 70% at 6% 94%,
+      rgba(117, 88, 183, 0.95) 0%,
+      rgba(117, 88, 183, 0) 55%
+    ),
+    radial-gradient(
+      80% 70% at 29% 0%,
+      rgba(39, 26, 72, 1) 0%,
+      rgba(78, 57, 140, 0.45) 45%,
+      rgba(114, 84, 201, 0) 70%
+    ),
+    #271948;
+}
+
+.airo-chat *,
+.airo-chat *::before,
+.airo-chat *::after {
+  box-sizing: border-box;
+}
+
+.airo-chat__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.airo-chat__logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--airo-space-sm);
+}
+
+.airo-chat__logo {
+  display: block;
+  width: 52px;
+  height: 24px;
+}
+
+.airo-chat__header-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: var(--airo-space-md);
+}
+
+.airo-chat__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+}
+
+.airo-chat__icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.airo-chat__tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.airo-chat__tabs::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--airo-tab-border);
+  pointer-events: none;
+}
+
+.airo-chat__tab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 48px;
+  margin: 0;
+  padding: 0 2px;
+  border: none;
+  border-bottom: 4px solid transparent;
+  border-radius: 5px 5px 0 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.airo-chat__tab.is-active {
+  border-bottom-color: var(--airo-accent);
+}
+
+.airo-chat__tab.is-muted:not(.is-active) {
+  opacity: 0.4;
+}
+
+.airo-chat__tab img {
+  display: block;
+}
+
+.airo-chat__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--airo-space-md);
+  min-height: 0;
+  width: 100%;
+  max-width: 400px;
+}
+
+.airo-chat__conversation {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--airo-space-md);
+  min-height: 0;
+  padding: var(--airo-space-sm);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.airo-chat__ai {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  padding-right: 40px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.airo-chat__ai-title {
+  margin: 0 0 var(--airo-space-sm);
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.airo-chat__ai-body {
+  margin: 0;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.airo-chat__user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  padding-left: 40px;
+}
+
+.airo-chat__user-bubble {
+  max-width: 100%;
+  padding: var(--airo-space-md);
+  border: 1px solid var(--airo-user-border);
+  border-radius: var(--airo-radius) var(--airo-radius) 0 var(--airo-radius);
+  background: var(--airo-user-bg);
+  color: #fff;
+  font-size: 16px;
+  line-height: 24px;
+  overflow: hidden;
+}
+
+.airo-chat__user-bubble p {
+  margin: 0;
+}
+
+.airo-chat__thinker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: 2px;
+}
+
+.airo-spinner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.airo-spinner__ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  animation: airo-spin-ccw 2s linear infinite;
+}
+
+.airo-spinner__sparkles {
+  position: relative;
+  z-index: 1;
+  animation: airo-sparkle-step 8s ease-in-out infinite;
+}
+
+@keyframes airo-spin-ccw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes airo-sparkle-step {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: rotate(8deg) scale(1.05);
+    opacity: 0.9;
+  }
+  70% {
+    transform: rotate(-6deg) scale(0.96);
+    opacity: 1;
+  }
+}
+
+.airo-chat__engage {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.airo-chat__prompt {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 135px;
+  padding: var(--airo-space-lg) var(--airo-space-md) var(--airo-space-md);
+  border: 1px solid var(--airo-prompt-border);
+  border-radius: var(--airo-radius);
+  background: #fff;
+}
+
+.airo-chat__field-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.airo-chat__textarea {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: #111;
+  font: inherit;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.airo-chat__textarea::placeholder {
+  color: rgba(17, 17, 17, 0.45);
+}
+
+.airo-chat__textarea:disabled {
+  opacity: 0.6;
+}
+
+.airo-chat__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.airo-chat__actions-left,
+.airo-chat__actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.airo-chat__actions-left {
+  flex: 1 1 auto;
+}
+
+.airo-chat__tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--airo-tool);
+  cursor: pointer;
+}
+
+.airo-chat__tool-btn:hover {
+  background: rgba(123, 92, 255, 0.1);
+}
+
+.airo-chat__send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: var(--airo-send);
+  color: #fff;
+  cursor: pointer;
+}
+
+.airo-chat__send:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+.airo-chat__send:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.airo-chat__placeholder {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  .airo-chat {
+    width: 100%;
+    height: 100%;
+    border-left-width: 0;
+    border-radius: 0;
+  }
+
+  .airo-chat__body {
+    max-width: none;
+  }
+}

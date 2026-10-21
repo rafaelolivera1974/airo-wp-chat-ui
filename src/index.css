@@ -1,0 +1,45 @@
+@font-face {
+  font-family: gdsherpa;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.11.0/GDSherpa-bold.woff2')
+      format('woff2'),
+    url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.11.0/GDSherpa-bold.woff')
+      format('woff');
+}
+
+@font-face {
+  font-family: gdsherpa;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.11.0/GDSherpa-regular.woff2')
+      format('woff2'),
+    url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.11.0/GDSherpa-regular.woff')
+      format('woff');
+}
+
+@font-face {
+  font-family: gdsherpa;
+  font-weight: 1 999;
+  font-display: swap;
+  src: url('https://img6.wsimg.com/ux-assets/@ux/fonts/4.11.0/GDSherpa-vf.woff2')
+    format('woff2-variations');
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  min-height: 100dvh;
+}
+
+body {
+  background: #120c1f;
+  color: #fff;
+  font-family: gdsherpa, 'GD Sherpa Variable', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
