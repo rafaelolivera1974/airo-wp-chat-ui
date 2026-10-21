@@ -1,3 +1,5 @@
+import { assetUrl } from '../lib/assets'
+
 type AiroSpinnerProps = {
   size?: number
 }
@@ -14,14 +16,14 @@ export function AiroSpinner({ size = 32 }: AiroSpinnerProps) {
       aria-label="Airo is thinking"
     >
       <img
-        src="/assets/spinner.svg"
+        src={assetUrl('assets/spinner.svg')}
         alt=""
         className="airo-spinner__ring"
         style={{ width: size, height: size }}
         aria-hidden
       />
       <img
-        src="/assets/sparkles-filled.svg"
+        src={assetUrl('assets/sparkles-filled.svg')}
         alt=""
         className="airo-spinner__sparkles"
         style={{ width: sparklesSize, height: sparklesSize }}

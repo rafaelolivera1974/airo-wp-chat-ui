@@ -1,5 +1,6 @@
 import { AiroSpinner } from './AiroSpinner'
 import type { FeedKind, TaskStatus } from '../lib/agentTypes'
+import { assetUrl } from '../lib/assets'
 
 type TaskStatusIconProps = {
   status: TaskStatus | FeedKind
@@ -15,7 +16,7 @@ export function TaskStatusIcon({ status, size = 24 }: TaskStatusIconProps) {
   if (status === 'done' || status === 'ok') {
     return (
       <img
-        src="/assets/indicator-done.svg"
+        src={assetUrl('assets/indicator-done.svg')}
         alt=""
         width={size}
         height={size}
@@ -29,7 +30,7 @@ export function TaskStatusIcon({ status, size = 24 }: TaskStatusIconProps) {
   if (status === 'pending' || status === 'removed') {
     return (
       <img
-        src="/assets/indicator-pending.svg"
+        src={assetUrl('assets/indicator-pending.svg')}
         alt=""
         width={size}
         height={size}
@@ -87,7 +88,7 @@ export function TaskStatusIcon({ status, size = 24 }: TaskStatusIconProps) {
 
   return (
     <img
-      src="/assets/indicator-active.svg"
+      src={assetUrl('assets/indicator-active.svg')}
       alt=""
       width={size}
       height={size}

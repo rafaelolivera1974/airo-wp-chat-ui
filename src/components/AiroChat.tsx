@@ -16,6 +16,7 @@ import {
 } from './icons'
 import type { AgentRunState } from '../hooks/useAgentRun'
 import { isHappyPathScenario, USER_SEED, type ScenarioId } from '../lib/agentTypes'
+import { assetUrl } from '../lib/assets'
 import './AiroChat.css'
 
 type TabId = 'chat' | 'styles' | 'settings'
@@ -130,7 +131,7 @@ export function AiroChat({
       <header className="airo-chat__header">
         <div className="airo-chat__logo-wrap">
           <img
-            src="/assets/airo-only.svg"
+            src={assetUrl('assets/airo-only.svg')}
             alt="Airo"
             className="airo-chat__logo"
             width={52}

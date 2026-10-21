@@ -1,3 +1,5 @@
+import { assetUrl } from '../lib/assets'
+
 type IconProps = {
   size?: number
   className?: string
@@ -24,7 +26,7 @@ export function ChatIcon({ size = 24, className }: IconProps) {
 export function StylesIcon({ size = 24, className }: IconProps) {
   return (
     <img
-      src="/assets/styles.svg"
+      src={assetUrl('assets/styles.svg')}
       alt=""
       width={size}
       height={size}
