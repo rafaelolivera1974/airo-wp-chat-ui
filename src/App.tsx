@@ -8,10 +8,17 @@ import './App.css'
 export default function App() {
   const [scenario, setScenario] = useState<ScenarioId>('normal')
   const [speed, setSpeed] = useState(1)
-  const { state, play, answerAsk, togglePlan, toggleActivity } = useAgentRun(
-    speed,
-    scenario,
-  )
+  const {
+    state,
+    play,
+    stop,
+    sendMessage,
+    answerAsk,
+    togglePlan,
+    toggleActivity,
+    toggleArchivePlan,
+    toggleArchiveActivity,
+  } = useAgentRun(speed, scenario)
   const booted = useRef(false)
 
   useEffect(() => {
@@ -34,8 +41,12 @@ export default function App() {
         agent={state}
         onTogglePlan={togglePlan}
         onToggleActivity={toggleActivity}
+        onToggleArchivePlan={toggleArchivePlan}
+        onToggleArchiveActivity={toggleArchiveActivity}
         onAnswerAsk={answerAsk}
         onFeedbackAction={() => void play()}
+        onStop={stop}
+        onSend={(text) => void sendMessage(text)}
       />
     </div>
   )

@@ -23,9 +23,13 @@ function getProgressMeta(plan: PlanTask[], finalTitle: string | null) {
   const title = current?.text ?? finalTitle ?? 'Done'
   const shown = Math.min(done + (current ? 1 : 0), live.length)
   const pct = live.length === 0 ? 0 : (done / live.length) * 100
-  const headStatus = current?.status ?? 'done'
+  const cancelled = live.filter((t) => t.status === 'cancelled').length
+  const headStatus =
+    current?.status ??
+    (cancelled > 0 && done + cancelled === live.length ? 'cancelled' : 'done')
   const complete =
-    !!finalTitle || (live.length > 0 && !current && done === live.length)
+    !!finalTitle ||
+    (live.length > 0 && !current && (done === live.length || cancelled > 0))
 
   return { title, count: `${shown} of ${live.length}`, pct, headStatus, complete }
 }

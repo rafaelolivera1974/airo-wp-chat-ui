@@ -21,15 +21,25 @@ export type PlanTask = {
   isNew?: boolean
 }
 
-export type FeedKind = 'ok' | 'warn' | 'bad' | 'run' | 'pending'
+export type FeedKind = 'ok' | 'warn' | 'bad' | 'run' | 'pending' | 'cancelled'
 
 export type FeedItem = {
   id: string
   key: string
   text: string
+  /** Label to show when the tool finishes (for resume). */
+  doneText?: string
   detail?: string
+  doneDetail?: string
+  doneKind?: 'ok' | 'warn' | 'bad'
   kind: FeedKind
   divider?: boolean
+}
+
+export type ChatMessage = {
+  id: string
+  role: 'user' | 'ai'
+  body: string
 }
 
 export type AskPrompt = {
@@ -64,7 +74,16 @@ export const SUMMARY_COPY =
 export const INTRO_COPY =
   "Got it. I'll build a Services page that matches your site."
 
+export const STOPPED_COPY =
+  "Okay — I've stopped. Nothing else will change unless you ask me to continue."
+
+export const RESUME_COPY = "On it — picking up where I left off."
+
 export const USER_SEED = 'Add a Services page to my site'
+
+export function isContinueMessage(text: string): boolean {
+  return /^\s*continue\b/i.test(text.trim())
+}
 
 /** Happy-path completions use Undo; fail uses Retry. */
 export function isHappyPathScenario(scenario: ScenarioId): boolean {

@@ -151,8 +151,9 @@
 
 .agent-card__item.is-removed,
 .agent-card__item.is-cancelled {
-  opacity: 0.5;
+  opacity: 0.55;
   text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .agent-card__item.is-new {
@@ -210,6 +211,10 @@
 
 .task-status-glyph--bad {
   color: #f07178;
+}
+
+.task-status-glyph--cancelled {
+  color: rgba(255, 255, 255, 0.55);
 }
 
 @keyframes agent-slide {

@@ -11,6 +11,7 @@ import {
   PlusIcon,
   SendIcon,
   SettingsIcon,
+  StopIcon,
   StylesIcon,
 } from './icons'
 import type { AgentRunState } from '../hooks/useAgentRun'
@@ -23,16 +24,57 @@ type AiroChatProps = {
   agent: AgentRunState
   onTogglePlan: () => void
   onToggleActivity: () => void
+  onToggleArchivePlan: (id: string) => void
+  onToggleArchiveActivity: (id: string) => void
   onAnswerAsk: () => void
   onFeedbackAction: () => void
+  onStop: () => void
+  onSend: (text: string) => void
+}
+
+function LiveCards({
+  agent,
+  onTogglePlan,
+  onToggleActivity,
+  feedRef,
+}: {
+  agent: AgentRunState
+  onTogglePlan: () => void
+  onToggleActivity: () => void
+  feedRef: React.RefObject<HTMLUListElement | null>
+}) {
+  return (
+    <>
+      <ActivityCard
+        feed={agent.feed}
+        steps={agent.steps}
+        open={agent.activityOpen}
+        onToggle={onToggleActivity}
+        feedRef={feedRef}
+      />
+      {agent.plan ? (
+        <ProgressCard
+          plan={agent.plan}
+          open={agent.planOpen}
+          note={agent.planNote}
+          finalTitle={agent.planFinal}
+          onToggle={onTogglePlan}
+        />
+      ) : null}
+    </>
+  )
 }
 
 export function AiroChat({
   agent,
   onTogglePlan,
   onToggleActivity,
+  onToggleArchivePlan,
+  onToggleArchiveActivity,
   onAnswerAsk,
   onFeedbackAction,
+  onStop,
+  onSend,
 }: AiroChatProps) {
   const [activeTab, setActiveTab] = useState<TabId>('chat')
   const [draft, setDraft] = useState('')
@@ -52,6 +94,9 @@ export function AiroChat({
     agent.summary,
     agent.ask,
     agent.phase,
+    agent.timeline,
+    agent.cardsAfterMessages,
+    agent.liveCards,
   ])
 
   useEffect(() => {
@@ -65,7 +110,20 @@ export function AiroChat({
       ? isHappyPathScenario(agent.scenario)
         ? 'undo'
         : 'retry'
-      : null
+      : agent.phase === 'stopped'
+        ? 'undo'
+        : null
+
+  const isRunning = agent.phase === 'running'
+  const showLiveEarly = agent.liveCards && !agent.cardsAfterMessages
+  const showLiveLate = agent.liveCards && agent.cardsAfterMessages
+
+  const sendDraft = () => {
+    const text = draft.trim()
+    if (!text || isRunning) return
+    setDraft('')
+    onSend(text)
+  }
 
   return (
     <aside className="airo-chat" aria-label="Airo chat">
@@ -134,27 +192,70 @@ export function AiroChat({
               </div>
             ) : null}
 
-            {agent.plan ? (
-              <ProgressCard
-                plan={agent.plan}
-                open={agent.planOpen}
-                note={agent.planNote}
-                finalTitle={agent.planFinal}
-                onToggle={onTogglePlan}
-              />
-            ) : null}
-
-            {agent.phase !== 'idle' ? (
-              <ActivityCard
-                feed={agent.feed}
-                steps={agent.steps}
-                open={agent.activityOpen}
-                onToggle={onToggleActivity}
+            {showLiveEarly ? (
+              <LiveCards
+                agent={agent}
+                onTogglePlan={onTogglePlan}
+                onToggleActivity={onToggleActivity}
                 feedRef={feedRef}
               />
             ) : null}
 
-            {agent.ask ? (
+            {agent.ask && showLiveEarly ? (
+              <div className="airo-chat__ai">
+                <p className="airo-chat__ai-body">{agent.ask.label}</p>
+              </div>
+            ) : null}
+
+            {agent.timeline.map((entry) => {
+              if (entry.type === 'archive') {
+                const arch = entry.archive
+                return (
+                  <div className="airo-chat__archive" key={entry.id}>
+                    {arch.feed.length > 0 ? (
+                      <ActivityCard
+                        feed={arch.feed}
+                        steps={arch.steps}
+                        open={arch.activityOpen}
+                        onToggle={() => onToggleArchiveActivity(arch.id)}
+                      />
+                    ) : null}
+                    {arch.plan ? (
+                      <ProgressCard
+                        plan={arch.plan}
+                        open={arch.planOpen}
+                        note={null}
+                        finalTitle={arch.planFinal}
+                        onToggle={() => onToggleArchivePlan(arch.id)}
+                      />
+                    ) : null}
+                  </div>
+                )
+              }
+
+              return entry.role === 'user' ? (
+                <div className="airo-chat__user" key={entry.id}>
+                  <div className="airo-chat__user-bubble">
+                    <p>{entry.body}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="airo-chat__ai" key={entry.id}>
+                  <p className="airo-chat__ai-body">{entry.body}</p>
+                </div>
+              )
+            })}
+
+            {showLiveLate ? (
+              <LiveCards
+                agent={agent}
+                onTogglePlan={onTogglePlan}
+                onToggleActivity={onToggleActivity}
+                feedRef={feedRef}
+              />
+            ) : null}
+
+            {agent.ask && showLiveLate ? (
               <div className="airo-chat__ai">
                 <p className="airo-chat__ai-body">{agent.ask.label}</p>
               </div>
@@ -180,7 +281,10 @@ export function AiroChat({
           <form
             className="airo-chat__engage"
             id={formId}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) => {
+              e.preventDefault()
+              sendDraft()
+            }}
           >
             {agent.ask ? (
               <SuggestionPills ask={agent.ask} onSelect={() => onAnswerAsk()} />
@@ -197,6 +301,12 @@ export function AiroChat({
                 placeholder="Ask Airo to edit your site…"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    sendDraft()
+                  }
+                }}
               />
               <div className="airo-chat__actions">
                 <div className="airo-chat__actions-left">
@@ -223,14 +333,25 @@ export function AiroChat({
                   >
                     <MicIcon size={18} />
                   </button>
-                  <button
-                    type="submit"
-                    className="airo-chat__send"
-                    aria-label="Send"
-                    disabled
-                  >
-                    <SendIcon size={16} />
-                  </button>
+                  {isRunning ? (
+                    <button
+                      type="button"
+                      className="airo-chat__send airo-chat__send--stop"
+                      aria-label="Stop"
+                      onClick={onStop}
+                    >
+                      <StopIcon size={16} />
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="airo-chat__send"
+                      aria-label="Send"
+                      disabled={!draft.trim()}
+                    >
+                      <SendIcon size={16} />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

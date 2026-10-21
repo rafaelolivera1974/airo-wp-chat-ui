@@ -6,7 +6,7 @@
   --airo-user-border: rgba(255, 255, 255, 0.25);
   --airo-prompt-border: rgba(212, 219, 224, 0.5);
   --airo-tool: #7b5cff;
-  --airo-send: #c4b5fd;
+  --airo-send: #744bc4;
   --airo-radius: 16px;
   --airo-space-sm: 8px;
   --airo-space-md: 16px;
@@ -392,6 +392,16 @@
 .airo-chat__send:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.airo-chat__send--stop {
+  background: #111;
+  color: #fff;
+}
+
+.airo-chat__send--stop:hover {
+  background: #2a2a2a;
+  filter: none;
 }
 
 .airo-chat__placeholder {

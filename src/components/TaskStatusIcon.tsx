@@ -25,8 +25,8 @@ export function TaskStatusIcon({ status, size = 24 }: TaskStatusIconProps) {
     )
   }
 
-  // Not yet started (plan or activity) — Figma empty ring, node 4499:2706
-  if (status === 'pending' || status === 'removed' || status === 'cancelled') {
+  // Not yet started — Figma empty ring, node 4499:2706
+  if (status === 'pending' || status === 'removed') {
     return (
       <img
         src="/assets/indicator-pending.svg"
@@ -34,11 +34,30 @@ export function TaskStatusIcon({ status, size = 24 }: TaskStatusIconProps) {
         width={size}
         height={size}
         className="task-status-icon"
-        style={{
-          opacity: status === 'pending' ? 1 : 0.5,
-        }}
+        style={{ opacity: status === 'pending' ? 1 : 0.5 }}
         aria-hidden
       />
+    )
+  }
+
+  if (status === 'cancelled') {
+    return (
+      <span
+        className="task-status-glyph task-status-glyph--cancelled"
+        style={{ width: size, height: size }}
+        aria-hidden
+      >
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <circle
+            cx="12"
+            cy="12"
+            r="11.5"
+            stroke="currentColor"
+            strokeOpacity="0.35"
+          />
+          <rect x="8" y="8" width="8" height="8" rx="1" fill="currentColor" />
+        </svg>
+      </span>
     )
   }
 

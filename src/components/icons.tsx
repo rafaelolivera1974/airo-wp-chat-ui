@@ -173,3 +173,18 @@ export function SendIcon({ size = 16, className }: IconProps) {
     </svg>
   )
 }
+
+export function StopIcon({ size = 16, className }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+    </svg>
+  )
+}
