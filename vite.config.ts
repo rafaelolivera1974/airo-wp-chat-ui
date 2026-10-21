@@ -1,12 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
+// GitHub Pages project site: …/airo-wp-chat-ui/
+const pagesBase = '/airo-wp-chat-ui/'
+
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  // GitHub Pages project site: https://gdcorp-ux.github.io/airo-wp-chat-ui/
-  base: process.env.GITHUB_PAGES === '1' ? '/airo-wp-chat-ui/' : '/',
+  base: mode === 'pages' ? pagesBase : '/',
   server: {
     port: 5175,
   },
-})
+}))
+
 
