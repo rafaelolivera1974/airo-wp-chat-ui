@@ -46,13 +46,6 @@ function LiveCards({
 }) {
   return (
     <>
-      <ActivityCard
-        feed={agent.feed}
-        steps={agent.steps}
-        open={agent.activityOpen}
-        onToggle={onToggleActivity}
-        feedRef={feedRef}
-      />
       {agent.plan ? (
         <ProgressCard
           plan={agent.plan}
@@ -62,6 +55,13 @@ function LiveCards({
           onToggle={onTogglePlan}
         />
       ) : null}
+      <ActivityCard
+        feed={agent.feed}
+        steps={agent.steps}
+        open={agent.activityOpen}
+        onToggle={onToggleActivity}
+        feedRef={feedRef}
+      />
     </>
   )
 }
@@ -213,14 +213,6 @@ export function AiroChat({
                 const arch = entry.archive
                 return (
                   <div className="airo-chat__archive" key={entry.id}>
-                    {arch.feed.length > 0 ? (
-                      <ActivityCard
-                        feed={arch.feed}
-                        steps={arch.steps}
-                        open={arch.activityOpen}
-                        onToggle={() => onToggleArchiveActivity(arch.id)}
-                      />
-                    ) : null}
                     {arch.plan ? (
                       <ProgressCard
                         plan={arch.plan}
@@ -228,6 +220,14 @@ export function AiroChat({
                         note={null}
                         finalTitle={arch.planFinal}
                         onToggle={() => onToggleArchivePlan(arch.id)}
+                      />
+                    ) : null}
+                    {arch.feed.length > 0 ? (
+                      <ActivityCard
+                        feed={arch.feed}
+                        steps={arch.steps}
+                        open={arch.activityOpen}
+                        onToggle={() => onToggleArchiveActivity(arch.id)}
                       />
                     ) : null}
                   </div>

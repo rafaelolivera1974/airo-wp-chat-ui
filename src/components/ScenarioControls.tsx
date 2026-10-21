@@ -20,12 +20,6 @@ export function ScenarioControls({
 }: ScenarioControlsProps) {
   return (
     <aside className="scenario-controls" aria-label="Prototype controls">
-      <h1 className="scenario-controls__title">Services page agent</h1>
-      <p className="scenario-controls__lead">
-        Run the progress prototype beside the Airo chat. Same scenarios as the HTML
-        file.
-      </p>
-
       <button
         type="button"
         className="scenario-controls__play"
